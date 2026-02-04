@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Как работает TAGIR</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --accent: #f59e0b; /* оранжевые вкрапления */
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border-soft: rgba(0,0,0,0.08);
+      --shadow-soft: 0 20px 40px rgba(0,0,0,0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* Логотип */
+    .logo {
+      position: fixed;
+      top: 24px;
+      left: 32px;
+      z-index: 100;
+    }
+
+    .logo img {
+      height: 42px;
+    }
+
+    /* Контейнер */
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 120px 24px 120px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin: 80px 0 32px;
+    }
+
+    p.lead {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 48px;
+    }
+
+    /* Карточки */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 32px;
+      width: 100%;
+      max-width: 720px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .card p {
+      font-size: 17px;
+      color: var(--text-muted);
+    }
+
+    .arrow {
+      font-size: 28px;
+      color: var(--accent);
+    }
+
+    /* Примеры сообщений */
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .example {
+      text-align: left;
+      padding: 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+    }
+
+    .example span {
+      display: block;
+      font-size: 14px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta {
+      margin-top: 96px;
+    }
+
+    .cta a {
+      display: inline-block;
+      padding: 18px 36px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.35);
+    }
+
+    .cta a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(245, 158, 11, 0.45);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 34px;
+      }
+      h2 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Логотип -->
+  <div class="logo">
+    <img src="logo.PNG" alt="TAGIR logo">
+  </div>
+
+  <div class="container">
+
+    <!-- Вход -->
+    <h1>Как работает TAGIR — без терминов и перегруза</h1>
+    <p class="lead">
+      Это не отчётность и не контроль.  
+      Это способ превратить живую работу педагога в понятный и ценный язык для родителя и владельца центра.
+    </p>
+
+    <!-- Механика в карточках -->
+    <div class="cards">
+
+      <div class="card">
+        <h3>1. Педагог просто фиксирует наблюдение</h3>
+        <p>
+          После занятия педагог не пишет отчёты.  
+          Он коротко говорит или записывает, что происходило:  
+          где ребёнок включался, где терялся, что пробовал.
+        </p>
+      </div>
+
+      <div class="arrow">↓</div>
+
+<div class="card">
+        <h3>2. Система переводит опыт в структуру</h3>
+        <p>
+          TAGIR обрабатывает наблюдения и собирает их в понятную логику:  
+          навыки, динамика, зоны роста, потенциал.
+        </p>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="card">
+        <h3>3. Каждый получает свой язык</h3>
+        <p>
+          Родитель — ясное понимание прогресса.  
+          Педагог — поддержку и рекомендации.  
+          Владелец — прозрачную картину происходящего.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Примеры сообщений -->
+    <h2>Как это выглядит в реальности</h2>
+    <p class="lead">
+      Ниже — реальные форматы сообщений.  
+      Не абстракции, а то, что читают родители и педагоги.
+    </p>
+
+    <div class="examples">
+
+      <div class="example">
+        <span>Сообщение родителю</span>
+        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
+        <p>[Здесь вставить твой авторский текст для родителя]</p>
+      </div>
+
+      <div class="example">
+        <span>Сообщение педагогу</span>
+        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
+        <p>[Здесь вставить твой авторский текст для педагога]</p>
+      </div>
+
+      <div class="example">
+        <span>Видение для владельца</span>
+        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
+        <p>[Здесь вставить твой авторский текст для владельца]</p>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <a href="https://t.me/TagirFeo">Обсудить внедрение TAGIR</a>
+    </div>
+
+  </div>
+
+</body>
+</html>
