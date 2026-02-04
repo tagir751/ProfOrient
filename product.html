@@ -3,249 +3,265 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Как работает TAGIR</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Как устроена система TAGIR</title>
 
   <style>
-    :root {
-      --bg-main: #f8fafc;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --accent: #f59e0b; /* оранжевые вкрапления */
-      --text-main: #0f172a;
-      --text-muted: #475569;
-      --border-soft: rgba(0,0,0,0.08);
-      --shadow-soft: 0 20px 40px rgba(0,0,0,0.08);
+    /* Логотип фиксированный */
+    .logo-fixed {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      width: 110px;
+      height: auto;
+      transition: transform 0.3s ease;
     }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+    .logo-fixed:hover {
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+      .logo-fixed { width: 90px; top: 16px; left: 16px; }
     }
 
     body {
-      margin: 0;
-      background: var(--bg-main);
-      color: var(--text-main);
-      line-height: 1.6;
-    }
-
-    /* Логотип */
-    .logo {
-      position: fixed;
-      top: 24px;
-      left: 32px;
-      z-index: 100;
-    }
-
-    .logo img {
-      height: 42px;
-    }
-
-    /* Контейнер */
-    .container {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 120px 24px 120px;
+      margin-top: 80px;
+      font-family: 'Inter', sans-serif;
+      color: #2D3748;
+      background: #F8F7F4;
+      line-height: 1.7;
       text-align: center;
     }
 
-    h1 {
-      font-size: 42px;
+    h1, h2 {
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      margin-bottom: 24px;
     }
 
-    h2 {
-      font-size: 32px;
-      margin: 80px 0 32px;
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 24px;
+      color: #1E3A5F;
     }
 
     p.lead {
-      font-size: 20px;
-      color: var(--text-muted);
-      max-width: 760px;
-      margin: 0 auto 48px;
+      font-size: 1.2rem;
+      color: #4A5568;
+      margin-bottom: 32px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    /* Карточки */
+    /* Карточки объяснений */
     .cards {
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 32px;
       margin-top: 40px;
     }
-
     .card {
-      background: var(--card-bg);
+      background: white;
       border-radius: 20px;
       padding: 32px;
-      width: 100%;
-      max-width: 720px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid var(--border-soft);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 22px;
-    }
-
-    .card p {
-      font-size: 17px;
-      color: var(--text-muted);
-    }
-
-    .arrow {
-      font-size: 28px;
-      color: var(--accent);
-    }
-
-    /* Примеры сообщений */
-    .examples {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .example {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       text-align: left;
-      padding: 24px;
-      background: #ffffff;
-      border-radius: 16px;
-      border: 1px solid var(--border-soft);
     }
-
-    .example span {
-      display: block;
-      font-size: 14px;
-      color: var(--accent);
+    .card h3 {
+      color: #1E3A5F;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #4A5568;
       margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .accent {
+      color: #E07A5F;
       font-weight: 600;
     }
 
-    /* CTA */
-    .cta {
-      margin-top: 96px;
+    /* Секции */
+    .section {
+      margin-top: 80px;
     }
 
-    .cta a {
-      display: inline-block;
-      padding: 18px 36px;
-      border-radius: 999px;
-      background: var(--accent);
-      color: #000;
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+      text-align: left;
+    }
+    .example-card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .example-header {
       font-weight: 600;
-      text-decoration: none;
-      font-size: 18px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.35);
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .message-preview {
+      background: #F8F7F4;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.95rem;
+      color: #2D3748;
+      line-height: 1.6;
     }
 
-    .cta a:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 40px rgba(245, 158, 11, 0.45);
+    footer {
+      margin-top: 80px;
+      padding: 40px 20px;
+      color: #718096;
+      font-size: 0.9rem;
     }
 
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 34px;
-      }
-      h2 {
-        font-size: 26px;
-      }
+    /* Анимации */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease;
+    }
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
-</head>
 
+</head>
 <body>
 
   <!-- Логотип -->
-  <div class="logo">
-    <img src="logo.png" alt="TAGIR logo">
-  </div>
+  <img src="logo.png" alt="TAGIR" class="logo-fixed">
 
   <div class="container">
 
-    <!-- Вход -->
-    <h1>Как работает TAGIR — без терминов и перегруза</h1>
-    <p class="lead">
-      Это не отчётность и не контроль.  
-      Это способ превратить живую работу педагога в понятный и ценный язык для родителя и владельца центра.
+    <h1 class="fade-in">Как устроена система TAGIR</h1>
+
+    <p class="lead fade-in">
+      Это не просто отчёты.  
+      Это способ сделать развитие ребёнка прозрачным, понятным и ценным для родителей, педагогов и владельцев центра.
     </p>
 
-    <!-- Механика в карточках -->
-    <div class="cards">
+    <!-- Объяснение механики -->
+    <div class="cards fade-in">
 
       <div class="card">
-        <h3>1. Педагог просто фиксирует наблюдение</h3>
+        <h3>1. Педагог фиксирует наблюдение</h3>
         <p>
-          После занятия педагог не пишет отчёты.  
-          Он коротко говорит или записывает, что происходило:  
-          где ребёнок включался, где терялся, что пробовал.
+          После занятия педагог не пишет длинные отчёты.  
+          Он всего лишь диктует 1–2 минуты — что происходило, где ребёнок включался, где застрял.
         </p>
       </div>
 
-      <div class="arrow">↓</div>
-
-<div class="card">
-        <h3>2. Система переводит опыт в структуру</h3>
+      <div class="card">
+        <h3>2. Система переводит речь в структуру</h3>
         <p>
-          TAGIR обрабатывает наблюдения и собирает их в понятную логику:  
-          навыки, динамика, зоны роста, потенциал.
+          TAGIR обрабатывает смысл, выделяет ключевые маркеры мышления и соотносит их с моделью развития.
         </p>
       </div>
-
-      <div class="arrow">↓</div>
 
       <div class="card">
         <h3>3. Каждый получает свой язык</h3>
         <p>
-          Родитель — ясное понимание прогресса.  
-          Педагог — поддержку и рекомендации.  
-          Владелец — прозрачную картину происходящего.
+          Родитель получает понятный отчёт, педагог — поддерживающие наблюдения, владелец — аналитику для управления.
         </p>
       </div>
 
     </div>
+<!-- Примеры сообщений -->
+    <section class="section" id="examples">
+      <h2 class="fade-in">Реальные примеры сообщений</h2>
+      <p class="lead fade-in">Два формата — один эпизод: родитель и педагог.</p>
 
-    <!-- Примеры сообщений -->
-    <h2>Как это выглядит в реальности</h2>
-    <p class="lead">
-      Ниже — реальные форматы сообщений.  
-      Не абстракции, а то, что читают родители и педагоги.
-    </p>
+      <div class="examples-grid">
 
-    <div class="examples">
+        <!-- Пример родителю -->
+        <div class="example-card fade-in">
+          <div class="example-header">💬 Telegram-сообщение родителю</div>
+          <div class="message-preview">
+            <div><strong>🎯 Даниил открыл для себя настоящую физику</strong></div>
+            <p>На занятии Даниил решил создать игру про футбол. Мяч должен лететь от игрока к воротам, которые стоят вдалеке.</p>
+            <p>Первый вопрос: как сделать, чтобы мяч летел как настоящий?</p>
 
-      <div class="example">
-        <span>Сообщение родителю</span>
-        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
-        <p>[Здесь вставить твой авторский текст для родителя]</p>
+            <p><strong>Интересное:</strong> Даниил не просто спросил ИИ «как сделать полёт?». Сначала он определил, чего ему не хватает — вес мяча, силу удара, формулу. Потом попросил ИИ эти данные и внимательно разбирался, как это работает.</p>
+
+            <p><strong class="accent">Это не «получил ответ» — это «понял логику».</strong></p>
+
+            <p>🏠 <strong>Один шаг дома:</strong> Попросите Даниила за 5–7 минут объяснить вам, какие 2–3 фактора влияют на дальность полёта мяча. Если захочет — пусть придумает, как это проверить в Scratch.</p>
+
+            <p style="font-size: 0.85rem; color: #718096; margin-top: 12px;">
+              Если захотите, напишите: как часто Даниил занимается программированием дома? Это помогает нам лучше подбирать задачи.
+            </p>
+          </div>
+        </div>
+
+        <!-- Пример педагогу -->
+        <div class="example-card fade-in">
+          <div class="example-header">✉️ Письмо педагогу</div>
+          <div class="message-preview">
+            <div>
+              <strong>✅ ВЫ ЗАМЕТИЛИ:</strong>
+            </div>
+            <p>Вы видели, что Даниил не просто реализует идею — он останавливается и спрашивает: «Что мне не хватает, чтобы это работало?»</p>
+            <p style="color: #4A7C59; font-weight: 600; margin-top: 8px;">
+              Это самый редкий навык. Даниил не ищет «готовый ответ» — ищет данные для собственной модели.
+            </p>
+
+            <div style="border-top:1px solid #E2E0DA; margin-top: 16px; padding-top: 12px;">
+              <strong>🎯 ЭТО СИСТЕМНОЕ МЫШЛЕНИЕ:</strong>
+              <p>Даниил прошёл путь: <span class="accent">Идея → Вопрос → Недостающие данные → Проверка логики</span></p>
+              <p>Вы создали такое условие: «Вот идея, как её реализовать?» — и Даниил сам пришёл к выводу: «Мне нужны факты и проверка».</p>
+            </div>
+
+            <div style="border-top:1px solid #E2E0DA; margin-top: 16px; padding-top: 12px;">
+              <strong>👁 СМОТРЕТЬ ДАЛЬШЕ:</strong>
+              <ol style="margin-top: 8px;">
+                <li>Что Даниил делал, когда столкнулся с непониманием?</li>
+                <li>Он хотел «реальную физику» или готов был к упрощённой модели?</li>
+                <li>Может ли он сам сказать, что именно в формуле непонятно?</li>
+              </ol>
+            </div>
+
+            <div style="background: rgba(30,58,95,0.05); border-left: 4px solid #1E3A5F; padding: 12px; margin-top: 16px;">
+              <strong>📋 СЛЕДУЮЩИЙ ШАГ:</strong>
+              <p>На следующем занятии: перевести «формулу/идею» в код. Может быть, не идеальную физику, а «табличную зависимость» — главное, чтобы работало.</p>
+              <p style="font-size: 0.85rem; font-style: italic; margin-top: 8px;">Смотреть: как реагирует на необходимость упростить? Просит ли уточнения?</p>
+            </div>
+
+          </div>
+        </div>
+
       </div>
-
-      <div class="example">
-        <span>Сообщение педагогу</span>
-        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
-        <p>[Здесь вставить твой авторский текст для педагога]</p>
-      </div>
-
-      <div class="example">
-        <span>Видение для владельца</span>
-        <!-- ВСТАВИТЬ ТЕКСТ 1:1 С pcam-tagir.vercel.app -->
-        <p>[Здесь вставить твой авторский текст для владельца]</p>
-      </div>
-
-    </div>
-
-    <!-- CTA -->
-    <div class="cta">
-      <a href="https://t.me/TagirFeo">Обсудить внедрение TAGIR</a>
-    </div>
+    </section>
 
   </div>
 
+  <footer>
+    © 2025 TAGIR — AI-система отчетов для образовательных центров. Все права защищены.
+  </footer>
+
+  <script>
+    // fade-in on scroll
+    const els = document.querySelectorAll('.fade-in');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+
+els.forEach(el => obs.observe(el));
+  </script>
 </body>
 </html>
