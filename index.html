@@ -2,92 +2,94 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <title>TAGIR AI — система удержания и роста LTV</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TAGIR AI — удержание учеников и рост LTV</title>
 
   <style>
     :root {
-      --bg-dark: #071a2b;
-      --bg-blue: #0b2f4a;
-      --green: #1de9b6;
-      --teal: #00bcd4;
-      --text-main: #eaf6ff;
-      --text-muted: #9fb4c7;
-      --glass-bg: rgba(255,255,255,0.08);
-      --glass-border: rgba(255,255,255,0.18);
+      --bg-main: #f7f8fa;
+      --bg-soft: #ffffff;
+      --accent: #ff8a00;
+      --accent-soft: #fff1e0;
+      --text-main: #1f2933;
+      --text-muted: #5f6c7b;
+      --border: #e5e7eb;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
-      background: radial-gradient(1200px 600px at 10% -10%, #0f3d5e, transparent),
-                  radial-gradient(1000px 500px at 90% 10%, #0a5c54, transparent),
-                  linear-gradient(180deg, var(--bg-dark), var(--bg-blue));
+      background: linear-gradient(180deg, #ffffff, #f3f4f6);
       color: var(--text-main);
       line-height: 1.6;
-      overflow-x: hidden;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+
+    .logo {
+      height: 36px;
     }
 
     section {
-      padding: 80px 20px;
       max-width: 1200px;
       margin: 0 auto;
-    }
-
-    h1, h2, h3 {
-      line-height: 1.25;
+      padding: 80px 20px;
     }
 
     h1 {
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-size: clamp(2rem, 4vw, 2.8rem);
       margin-bottom: 20px;
+      font-weight: 700;
     }
 
     h2 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      margin-bottom: 24px;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 20px;
     }
 
     p {
       color: var(--text-muted);
       font-size: 1.05rem;
+      max-width: 820px;
+    }
+
+    .hero {
+      padding-top: 60px;
     }
 
     .hero p {
       font-size: 1.15rem;
-      max-width: 720px;
     }
 
-    .cta-btn {
+    .cta {
       display: inline-block;
       margin-top: 32px;
-      padding: 16px 28px;
-      font-size: 1rem;
+      padding: 14px 26px;
+      background: var(--accent);
+      color: white;
       font-weight: 600;
-      color: #00332b;
-      background: linear-gradient(135deg, var(--green), var(--teal));
-      border-radius: 14px;
+      border-radius: 10px;
       text-decoration: none;
       transition: transform .2s ease, box-shadow .2s ease;
-      box-shadow: 0 10px 30px rgba(0, 255, 200, 0.25);
+      box-shadow: 0 10px 24px rgba(255,138,0,0.25);
     }
 
-    .cta-btn:hover {
+    .cta:hover {
       transform: translateY(-2px);
-      box-shadow: 0 16px 40px rgba(0, 255, 200, 0.35);
-    }
-
-    .glass {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      padding: 28px;
-      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 32px rgba(255,138,0,0.35);
     }
 
     .grid {
@@ -96,15 +98,176 @@
     }
 
     .grid-2 {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
 
-    .grid-3 {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    .card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
     }
 
-    .logic {
+    .card strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .accent {
+      color: var(--accent);
       font-weight: 600;
+    }
+
+    .calc {
+      background: var(--accent-soft);
+      border-radius: 20px;
+      padding: 32px;
+    }
+
+    .calc input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.PNG" alt="TAGIR" class="logo">
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>
+    Родители платят не за занятия.<br/>
+    Они платят за <span class="accent">понятный прогресс ребёнка</span>.
+  </h1>
+  <p>
+    TAGIR — это AI-система, которая превращает каждое занятие в измеримый результат:
+    для родителя, педагога и владельца центра.
+  </p>
+  <a class="cta" href="https://t.me/TagirFeo" target="_blank">
+    Обсудить внедрение
+  </a>
+</section>
+
+<!-- HARD PAIN -->
+<section>
+  <h2>Жёсткая реальность рынка</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <strong>Отток учеников</strong>
+      Родитель не видит прогресс → начинает сомневаться → уходит через 3–4 месяца.
+    </div>
+    <div class="card">
+      <strong>Иллюзия контроля</strong>
+      Вы не знаете, что реально происходит на занятиях, пока не появляются жалобы.
+    </div>
+    <div class="card">
+      <strong>Педагоги перегружены</strong>
+      Любая отчётность = саботаж или формальность.
+    </div>
+    <div class="card">
+      <strong>Вы теряете деньги молча</strong>
+      Без цифр. Без сигналов. Без шансов вовремя вмешаться.
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <h2>Как это выглядит на практике</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <strong>Что делает педагог</strong>
+      После занятия — 2 минуты голосом:
+      что делали, какие навыки включались, где был рост.
+    </div>
+    <div class="card">
+      <strong>Что получает родитель</strong>
+      Понятное сообщение:
+      «Сегодня развивали анализ, речь, саморегуляцию. Видим прогресс вот здесь».
+    </div>
+    <div class="card">
+      <strong>Что видите вы</strong>
+      Дашборд по каждому педагогу, группе и ребёнку:
+      динамика, риски, точки роста.
+    </div>
+    <div class="card">
+      <strong>Что продаёт ваш центр</strong>
+      Не часы занятий.
+      А доказуемое развитие мышления.
+    </div>
+  </div>
+</section>
+
+<!-- LTV CALC -->
+<section>
+  <h2>Сколько денег вы теряете сейчас</h2>
+  <div class="calc">
+    <p>Введите средние показатели вашего центра:</p>
+
+    <label>Средний чек в месяц (₽)</label>
+    <input id="price" type="number" value="8000">
+
+    <label>Среднее время обучения (мес.)</label>
+    <input id="months" type="number" value="4">
+
+    <label>Количество учеников</label>
+    <input id="students" type="number" value="100">
+
+    <p>
+      Потенциальный LTV при росте +40%:
+      <strong class="accent" id="result">—</strong>
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Тагир</strong><br/>
+    Telegram: <a href="https://t.me/TagirFeo" target="_blank">@TagirFeo</a><br/>
+    📞 +7 978 650-86-26<br/>
+    ✉️ tagir75@gmail.com
+  </p>
+</footer>
+
+<script>
+  function calc() {
+    const price = +priceInput.value;
+    const months = +monthsInput.value;
+    const students = +studentsInput.value;
+    const base = price * months * students;
+    const growth = Math.round(base * 1.4);
+    result.innerText = growth.toLocaleString('ru-RU') + ' ₽';
+  }
+
+  const priceInput = document.getElementById('price');
+  const monthsInput = document.getElementById('months');
+  const studentsInput = document.getElementById('students');
+  const result = document.getElementById('result');
+
+  [priceInput, monthsInput, studentsInput].forEach(i =>
+    i.addEventListener('input', calc)
+  );
+
+  calc();
+</script>
+
+</body>
+</html>      font-weight: 600;
       color: var(--text-main);
       margin-bottom: 10px;
     }
