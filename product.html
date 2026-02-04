@@ -1,319 +1,1748 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TAGIR — как работает система</title>
-
+  <title>AI-система отчётов для образовательных центров | TAGIR</title>
   <style>
-    :root {
-      --bg: #f9fafb;
-      --white: #ffffff;
-      --accent: #ff8a00;
-      --accent-soft: #fff4e6;
-      --text: #1f2933;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      text-align: center;
-    }
-
-    header {
+    /* Логотип — фиксированный в левом верхнем углу, прозрачный фон, адаптивный размер */
+    .logo-fixed {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.9);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
-      z-index: 100;
-      display: flex;
-      align-items: center;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      width: 100px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+    .logo-fixed:hover {
+      transform: scale(1.05);
     }
 
-    header img {
-      height: 34px;
+    /* Адаптация под мобильные */
+    @media (max-width: 768px) {
+      .logo-fixed {
+        width: 100px;
+        top: 16px;
+        left: 16px;
+      }
     }
 
-    section {
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 100px 20px;
-    }
-
-    h1 {
-      font-size: clamp(2.2rem, 4vw, 3rem);
-      margin-bottom: 28px;
-      font-weight: 700;
-    }
-
-    h2 {
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      margin-bottom: 24px;
-      font-weight: 600;
-    }
-
-    h3 {
-      font-size: 1.2rem;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 1.05rem;
-      color: var(--muted);
-      margin: 0 auto 18px;
-      max-width: 860px;
-    }
-
-    .accent {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 40px 34px;
-      margin: 36px auto;
-      text-align: left;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.06);
-    }
-
-    .soft {
-      background: var(--accent-soft);
-    }
-
-    .flow {
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      margin-top: 40px;
-    }
-
-    .step {
-      border-left: 4px solid var(--accent);
-      padding-left: 22px;
-    }
-
-    .message {
-      background: #f4f5f7;
-      border-radius: 14px;
-      padding: 18px;
-      font-size: 0.95rem;
-      color: #2d3748;
-      line-height: 1.6;
-    }
-
-    footer {
-      border-top: 1px solid var(--border);
-      background: #fff;
-      padding: 60px 20px;
-    }
-
-    .fade {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all .6s ease;
-    }
-
-    .fade.show {
-      opacity: 1;
-      transform: translateY(0);
+    /* Основной контент — отступ сверху, чтобы не перекрывался логотипом */
+    body {
+      margin-top: 80px; /* достаточно, чтобы логотип не закрывал заголовок */
     }
   </style>
 </head>
-
 <body>
+  <!-- ЛОГОТИП — вставляется здесь, поверх всего -->
+  <img src="logo.png" alt="TAGIR Logo" class="logo-fixed">
 
-<header>
-  <img src="logo.png" alt="TAGIR">
-</header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-система отчётов для образовательных центров | TAGIR</title>
+    <meta name="description" content="Автоматическая генерация персонализированных отчётов для родителей. Удерживайте клиентов через понимание развития детей.">
+    <meta name="keywords" content="отчёты для родителей, образовательный центр, удержание клиентов, AI отчёты, развитие мышления">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- INTRO -->
-<section>
-  <h1 class="fade">
-    Как на самом деле работает система TAGIR
-  </h1>
-  <p class="fade">
-    Эта страница — не для всех.
-  </p>
-  <p class="fade">
-    Она для владельца, который хочет понять:
-    <br/>
-    <span class="accent">что именно происходит внутри системы,  
-    почему она влияет на удержание  
-    и за счёт чего создаётся ощущение контроля.</span>
-  </p>
-</section>
+        html {
+            scroll-behavior: smooth;
+        }
 
-<!-- CORE IDEA -->
-<section class="soft">
-  <h2 class="fade">
-    Базовая идея методики
-  </h2>
-  <p class="fade">
-    TAGIR не измеряет ребёнка.
-    <br/>
-    Он отслеживает <span class="accent">динамику мышления</span>.
-  </p>
-  <p class="fade">
-    Не «насколько он умный»,  
-    а <strong>как он думает, где растёт, где застревает и куда может пойти дальше</strong>.
-  </p>
-</section>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #2D3748;
+            background: #F8F7F4;
+            line-height: 1.6;
+        }
 
-<!-- FULL FLOW -->
-<section>
-  <h2 class="fade">
-    Полный цикл работы системы
-  </h2>
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
 
-  <div class="flow">
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
+        }
 
-    <div class="card fade step">
-      <h3>Шаг 1. Живое занятие</h3>
-      <p>
-        Никаких изменений в процессе обучения.
-        <br/>
-        Педагог работает как обычно.
-      </p>
-      <p>
-        Система <strong>не вмешивается</strong> в урок.
-      </p>
-    </div>
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
 
-<div class="card fade step">
-      <h3>Шаг 2. Фиксация наблюдений</h3>
-      <p>
-        После занятия педагог:
-        <br/>— не пишет отчёты
-        <br/>— не заполняет таблицы
-      </p>
-      <p>
-        Он просто <span class="accent">диктует голосом</span>:
-        что заметил, где ребёнок удивил, где застрял.
-      </p>
-    </div>
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: #4A7C59;
+            top: 10%;
+            left: 5%;
+        }
 
-    <div class="card fade step">
-      <h3>Шаг 3. Семантическая обработка</h3>
-      <p>
-        TAGIR не расшифровывает слова буквально.
-      </p>
-      <p>
-        Он выделяет:
-        <br/>— тип мышления
-        <br/>— уровень самостоятельности
-        <br/>— характер вопросов
-        <br/>— реакцию на трудность
-      </p>
-    </div>
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: #E07A5F;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 5s;
+        }
 
-    <div class="card fade step">
-      <h3>Шаг 4. Соотнесение с моделью развития</h3>
-      <p>
-        Каждое наблюдение ложится в карту развития мышления.
-      </p>
-      <p>
-        Это не шкала и не диагноз.
-        <br/>
-        Это <span class="accent">траектория</span>.
-      </p>
-    </div>
+        .blob-3 {
+            width: 250px;
+            height: 250px;
+            background: #5A9A6D;
+            top: 50%;
+            right: 25%;
+            animation-delay: 10s;
+        }
 
-    <div class="card fade step">
-      <h3>Шаг 5. Разные версии одного и того же смысла</h3>
-      <p>
-        Один и тот же эпизод
-        система переводит на три языка:
-      </p>
-      <p>
-        — язык родителя  
-        <br/>— язык педагога  
-        <br/>— язык владельца
-      </p>
-    </div>
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
 
-  </div>
-</section>
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
 
-<!-- REAL MESSAGES -->
-<section class="soft">
-  <h2 class="fade">
-    Как это выглядит в реальности
-  </h2>
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 10px 20px;
+            margin-bottom: 30px;
+        }
 
-  <div class="card fade">
-    <h3>Сообщение родителю</h3>
-    <div class="message">
-      🎯 Даниил открыл для себя настоящую физику  
-      <br/><br/>
-      На занятии Даниил решил создать игру про футбол...
-      <!-- ТУТ ВСТАВЛЯЕШЬ ПОЛНЫЙ ТЕКСТ ИЗ ТВОЕГО ПРЕДЫДУЩЕГО КОДА БЕЗ ИЗМЕНЕНИЙ -->
-    </div>
-  </div>
+        .hero-badge span {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            font-weight: 500;
+        }
 
-  <div class="card fade">
-    <h3>Сообщение педагогу</h3>
-    <div class="message">
-      ✅ ВЫ ЗАМЕТИЛИ:  
-      <br/><br/>
-      Вы видели, что Даниил не просто реализует идею...
-      <!-- ТУТ ТОЖЕ ВЕСЬ ТЕКСТ ЦЕЛИКОМ -->
-    </div>
-  </div>
-</section>
+        .sparkle {
+            color: #E07A5F;
+            font-size: 18px;
+        }
 
-<!-- FINAL -->
-<section>
-  <h2 class="fade">
-    Что получает владелец центра
-  </h2>
-  <p class="fade">
-    Не отчёты.
-    <br/>
-    Не контроль ради контроля.
-  </p>
-  <p class="fade accent">
-    А ощущение, что он видит процесс глубже,
-    чем когда-либо раньше.
-  </p>
-</section>
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: white;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
 
-<footer>
-  <p>
-    <strong>Тагир</strong><br/>
-    Telegram: @TagirFeo<br/>
-    📞 +7 978 650-86-26<br/>
-    ✉️ tagir75@gmail.com
-  </p>
-</footer>
+        .hero h1 span {
+            color: #E07A5F;
+        }
 
-<script>
-  const items = document.querySelectorAll('.fade');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('show');
-    });
-  }, { threshold: 0.15 });
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
 
-  items.forEach(i => observer.observe(i));
-</script>
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            sm:flex-direction: row;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
 
+        @media (min-width: 640px) {
+            .hero-buttons {
+                flex-direction: row;
+            }
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #E07A5F;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(224, 122, 95, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .btn-primary:hover {
+            background: #C6694F;
+            box-shadow: 0 15px 40px rgba(224, 122, 95, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-feature::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4A7C59;
+            border-radius: 50%;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 6px;
+            height: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 3px;
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #2D3748;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: #718096;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Pain Points */
+        .pain-points {
+            background: #F8F7F4;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #2D3748;
+        }
+
+        .card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* Solution Section */
+        .solution {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
+            color: white;
+        }
+
+        .solution .section-header h2,
+        .solution .section-header p {
+            color: white;
+        }
+
+        .solution .section-header p {
+            opacity: 0.7;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            position: relative;
+        }
+
+        .step {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 24px;
+            padding: 40px 32px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -16px;
+            left: 32px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .step p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        .solution-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        /* Features */
+        .features {
+            background: #F8F7F4;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 22px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #2D3748;
+        }
+
+        .feature-card p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Methodology */
+        .methodology {
+            background: white;
+        }
+
+        .methodology .section-header span {
+            color: #1E3A5F;
+        }
+
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .stage-card {
+            background: #F8F7F4;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .stage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        .stage-card.green { border-top: 4px solid #4A7C59; }
+        .stage-card.blue { border-top: 4px solid #1E3A5F; }
+        .stage-card.orange { border-top: 4px solid #E07A5F; }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px 24px 16px;
+        }
+
+        .stage-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stage-age {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .stage-card.green .stage-icon { background: rgba(74, 124, 89, 0.15); }
+        .stage-card.green .stage-age { background: rgba(74, 124, 89, 0.15); color: #4A7C59; }
+        
+        .stage-card.blue .stage-icon { background: rgba(30, 58, 95, 0.15); }
+        .stage-card.blue .stage-age { background: rgba(30, 58, 95, 0.15); color: #1E3A5F; }
+        
+        .stage-card.orange .stage-icon { background: rgba(224, 122, 95, 0.15); }
+        .stage-card.orange .stage-age { background: rgba(224, 122, 95, 0.15); color: #E07A5F; }
+
+        .stage-content {
+            padding: 0 24px 24px;
+        }
+
+        .stage-content h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #2D3748;
+        }
+
+        .stage-content p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .stage-skills-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .stage-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #2D3748;
+            border: 1px solid #E2E0DA;
+        }
+
+        .methodology-footer {
+            text-align: center;
+            margin-top: 48px;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        /* Examples */
+        .examples {
+            background: #F8F7F4;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+        }
+
+        @media (max-width: 480px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .example-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .example-header {
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .example-header.telegram { background: #1E3A5F; }
+        .example-header.email { background: #4A7C59; }
+
+        .example-content {
+            padding: 24px;
+        }
+
+        .message-preview {
+            background: #F8F7F4;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .message-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .message-title span {
+            font-size: 24px;
+        }
+
+        .message-title strong {
+            color: #2D3748;
+            font-size: 16px;
+        }
+
+        .message-text {
+            color: #2D3748;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .message-highlight {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid #4A7C59;
+            margin-bottom: 16px;
+        }
+
+        .message-highlight strong {
+            color: #1E3A5F;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .message-highlight p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message-highlight .conclusion {
+            color: #4A7C59;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .message-action {
+            background: rgba(224, 122, 95, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .message-action-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .message-action-title span {
+            font-size: 20px;
+        }
+
+        .message-action-title strong {
+            color: #2D3748;
+        }
+
+        .message-action p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .message-footer {
+            color: #718096;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .teacher-section {
+            margin-bottom: 20px;
+        }
+
+        .teacher-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .teacher-section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .teacher-section-header svg {
+            width: 20px;
+            height: 20px;
+            color: #4A7C59;
+        }
+
+        .teacher-section-header strong {
+            color: #2D3748;
+            font-size: 14px;
+        }
+
+        .teacher-section-header span {
+            font-size: 20px;
+        }
+
+        .teacher-section p {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            padding-left: 28px;
+        }
+
+        .teacher-section .highlight {
+            color: #1E3A5F;
+            font-weight: 600;
+        }
+
+        .teacher-section ol {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.7;
+            padding-left: 44px;
+        }
+
+        .teacher-section ol li {
+            margin-bottom: 8px;
+        }
+
+        .teacher-next-step {
+            background: rgba(30, 58, 95, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid #1E3A5F;
+        }
+
+        .teacher-next-step strong {
+            color: #1E3A5F;
+        }
+
+        /* Pricing */
+        .pricing {
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .pricing-card {
+            background: #F8F7F4;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        .pricing-card.recommended {
+            border: 2px solid #E07A5F;
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #E07A5F;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .pricing-content {
+            padding: 32px;
+        }
+
+        .pricing-card.recommended .pricing-content {
+            padding-top: 56px;
+        }
+
+        .pricing-header {
+            margin-bottom: 24px;
+        }
+
+        .pricing-header h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #2D3748;
+        }
+
+        .pricing-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .pricing-price {
+            margin-bottom: 24px;
+        }
+
+        .pricing-price .amount {
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .pricing-price .period {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: #2D3748;
+            font-size: 14px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .pricing-card:nth-child(1) .pricing-features li::before { color: #718096; }
+        .pricing-card:nth-child(2) .pricing-features li::before { color: #E07A5F; }
+        .pricing-card:nth-child(3) .pricing-features li::before { color: #1E3A5F; }
+
+        .pricing-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:nth-child(1) .pricing-btn {
+            background: white;
+            border: 2px solid #E2E0DA;
+            color: #2D3748;
+        }
+
+        .pricing-card:nth-child(1) .pricing-btn:hover {
+            border-color: #718096;
+            background: #F8F7F4;
+        }
+
+        .pricing-card:nth-child(2) .pricing-btn {
+            background: #E07A5F;
+            color: white;
+            box-shadow: 0 10px 30px rgba(224, 122, 95, 0.3);
+        }
+
+        .pricing-card:nth-child(2) .pricing-btn:hover {
+            background: #C6694F;
+            box-shadow: 0 15px 40px rgba(224, 122, 95, 0.4);
+        }
+
+        .pricing-card:nth-child(3) .pricing-btn {
+            background: white;
+            border: 2px solid #E2E0DA;
+            color: #2D3748;
+        }
+
+        .pricing-card:nth-child(3) .pricing-btn:hover {
+            border-color: #1E3A5F;
+            background: #F8F7F4;
+        }
+
+        .pricing-promo {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        .pricing-promo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(74, 124, 89, 0.1);
+            color: #4A7C59;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .pricing-promo-badge span {
+            font-size: 20px;
+        }
+
+        /* CTA Final */
+        .cta-final {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2D5A87 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-final .blob-1 {
+            top: -10%;
+            right: 5%;
+            left: auto;
+        }
+
+        .cta-final .blob-2 {
+            bottom: 10%;
+            left: 10%;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 24px;
+            color: white;
+        }
+
+        .cta-content h2 span {
+            color: #E07A5F;
+        }
+
+        .cta-content p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+        }
+
+        .cta-contacts {
+            margin-top: 64px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .cta-contacts > p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .contacts-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: white;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            background: #1A202C;
+            color: rgba(255,255,255,0.8);
+            padding: 64px 20px 32px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 48px;
+            max-width: 1200px;
+            margin: 0 auto 48px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1E3A5F 0%, #4A7C59 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .footer-logo span {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .footer-socials a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .footer-column h4 {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,0.4);
+            font-size: 14px;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+        <div class="hero-blob blob-3"></div>
+        
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="sparkle">✨</span>
+                <span>Новое поколение коммуникации с родителями</span>
+            </div>
+            
+            <h1>
+                AI-система отчётов,<br>
+                <span>которая удерживает клиентов</span>
+            </h1>
+            
+            <p>
+                Автоматическая генерация персонализированных отчётов для родителей. 
+                Педагог голосом — родитель получает инсайт.
+            </p>
+            
+            <div class="hero-buttons">
+                <a href="https://t.me/TagirFeo" class="btn-primary" target="_blank">
+                    Записаться на пилот
+                    <span>→</span>
+                </a>
+                <a href="#examples" class="btn-secondary">
+                    Увидеть пример отчёта
+                </a>
+            </div>
+            
+            <div class="hero-features">
+                <div class="hero-feature">Голосовой ввод</div>
+                <div class="hero-feature">2 минуты на отчёт</div>
+                <div class="hero-feature">Научная методика</div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="pain-points">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Знакомая ситуация?</h2>
+                <p>Владельцы образовательных центров сталкиваются с этими проблемами каждый день</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card fade-in">
+                    <div class="card-icon" style="background: rgba(224, 122, 95, 0.15);">👥</div>
+                    <h3>Отток клиентов</h3>
+                    <p>Дети бросают кружок через 2-3 месяца, и вы не понимаете почему</p>
+                </div>
+                
+                <div class="card fade-in">
+                    <div class="card-icon" style="background: rgba(30, 58, 95, 0.15);">💬</div>
+                    <h3>Жалобы родителей</h3>
+                    <p>Что мой ребёнок делает на занятиях? Почему нет результата?</p>
+                </div>
+                
+                <div class="card fade-in">
+                    <div class="card-icon" style="background: rgba(74, 124, 89, 0.15);">⏰</div>
+                    <h3>Педагоги перегружены</h3>
+                    <p>Отчёты отнимают часы. Педагоги сопротивляются «лишней» работе</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Как это работает</h2>
+                <p>Три простых шага от голоса педагога к инсайту родителя</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number" style="background: #4A7C59;">01</div>
+                    <div class="step-icon" style="background: rgba(74, 124, 89, 0.3);">🎤</div>
+                    <h3>Педагог диктует</h3>
+                    <p>2 минуты голосом в Telegram — никаких форм и таблиц</p>
+                </div>
+                
+                <div class="step fade-in">
+                    <div class="step-number" style="background: #1E3A5F;">02</div>
+                    <div class="step-icon" style="background: rgba(30, 58, 95, 0.3);">🧠</div>
+                    <h3>AI анализирует</h3>
+                    <p>Через методику развития мышления TAGIR</p>
+                </div>
+                
+                <div class="step fade-in">
+                    <div class="step-number" style="background: #E07A5F;">03</div>
+                    <div class="step-icon" style="background: rgba(224, 122, 95, 0.3);">📨</div>
+                    <h3>Родитель получает</h3>
+                    <p>Красивый отчёт с пониманием развития ребёнка</p>
+                </div>
+            </div>
+            
+            <div class="solution-cta fade-in">
+                <a href="#examples" class="btn-primary">
+                    Увидеть пример отчёта
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Что вы получаете</h2>
+                <p>Полный набор инструментов для удержания клиентов и развития педагогов</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(74, 124, 89, 0.15);">🎤</div>
+                    <h3>Голосовой ввод</h3>
+                    <p>Педагог просто диктует, не пишет. Экономия времени — с 30 минут до 2 минут.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(30, 58, 95, 0.15);">📚</div>
+                    <h3>Методика TAGIR</h3>
+                    <p>Отчёты основаны на научной системе развития мышления детей от 7 до 18 лет.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">📄</div>
+                    <h3>Два формата</h3>
+                    <p>Telegram для родителя + письмо педагогу с подтверждением компетенции.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(74, 124, 89, 0.15);">🏠</div>
+                    <h3>Домашние шаги</h3>
+                    <p>Конкретное действие для родителя после каждого занятия — вовлечение без принуждения.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(30, 58, 95, 0.15);">📈</div>
+                    <h3>История развития</h3>
+                    <p>Накопление данных о прогрессе ребёнка — виден рост навыков во времени.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" style="background: rgba(224, 122, 95, 0.15);">🏷️</div>
+                    <h3>Ваш бренд</h3>
+                    <p>Отчёты с логотипом вашего центра — родители видят вашу заботу и экспертность.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology Section -->
+    <section class="methodology" id="methodology">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Методика развития мышления <span>TAGIR</span></h2>
+                <p>12 навыков в 3 категориях. От простых поделок до стартапов — каждый этап готовит к следующему.</p>
+            </div>
+            
+            <div class="stages-grid">
+                <div class="stage-card green fade-in">
+                    <div class="stage-header">
+                        <div class="stage-icon">💡</div>
+                        <span class="stage-age">7-9 лет</span>
+                    </div>
+                    <div class="stage-content">
+                        <h3>Мастерская создателей</h3>
+                        <p>Работа руками, простые проекты с быстрым результатом. Первый опыт успеха и вера «я могу создавать».</p>
+                        <div class="stage-skills-label">Развиваемые навыки</div>
+                        <div class="stage-skills">
+                            <span class="skill-tag">Формулирование мыслей</span>
+                            <span class="skill-tag">Определение задач</span>
+                            <span class="skill-tag">Базовая командная работа</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stage-card blue fade-in">
+                    <div class="stage-header">
+                        <div class="stage-icon">🎯</div>
+                        <span class="stage-age">10-14 лет</span>
+                    </div>
+                    <div class="stage-content">
+                        <h3>Лаборатория решений</h3>
+                        <p>Интеллектуальные проекты, системное мышление, профориентация. От школьных проектов до предпринимательства.</p>
+                        <div class="stage-skills-label">Развиваемые навыки</div>
+                        <div class="stage-skills">
+                            <span class="skill-tag">Системное мышление</span>
+                            <span class="skill-tag">Управление проектом</span>
+                            <span class="skill-tag">Финансовая грамотность</span>
+                            <span class="skill-tag">Коммуникация</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stage-card orange fade-in">
+                    <div class="stage-header">
+                        <div class="stage-icon">🚀</div>
+                        <span class="stage-age">15-18 лет</span>
+                    </div>
+                    <div class="stage-content">
+                        <h3>Инкубатор стартапов</h3>
+                        <p>Реальные стартап-проекты, лидерство, стратегическое планирование. Подготовка к взрослой жизни.</p>
+                        <div class="stage-skills-label">Развиваемые навыки</div>
+                        <div class="stage-skills">
+                            <span class="skill-tag">Лидерство</span>
+                            <span class="skill-tag">Product Management</span>
+                            <span class="skill-tag">Business Development</span>
+                            <span class="skill-tag">Self-awareness</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="methodology-footer fade-in">
+                <p>Основано на фундаментальных принципах: Образование vs Воспитание, Потребитель → Создатель, Сложное мышление через сложные вопросы</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section class="examples" id="examples">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Как выглядят отчёты</h2>
+                <p>Два формата — для родителя и педагога. Один эпизод, две перспективы.</p>
+            </div>
+            
+            <div class="examples-grid">
+                <!-- Parent Report -->
+                <div class="example-card fade-in">
+                    <div class="example-header telegram">
+                        <span>💬</span>
+                        <span>Telegram для родителя</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="message-preview">
+                            <div class="message-title">
+                                <span>🎯</span>
+                                <strong>Даниил открыл для себя настоящую физику</strong>
+                            </div>
+                            
+                            <div class="message-text">
+                                <p>На занятии Даниил решил создать игру про футбол. Мяч должен летать от игрока к воротам, которые стоят вдалеке.</p>
+                                <p style="margin-top: 8px;">Первый вопрос: как сделать, чтобы мяч летел как настоящий?</p>
+                            </div>
+                            
+                            <div class="message-highlight">
+                                <strong>Интересное:</strong>
+                                <p>Даниил не просто спросил ИИ «как сделать полёт?». Сначала он определил, чего ему не хватает — вес мяча, силу удара, формулу. Потом попросил ИИ эти данные и внимательно разбирался, как это работает.</p>
+                                <p class="conclusion">Это не «получил ответ» — это «понял логику».</p>
+                            </div>
+                            
+                            <div class="message-action">
+                                <div class="message-action-title">
+                                    <span>🏠</span>
+                                    <strong>Один шаг дома:</strong>
+                                </div>
+                                <p>Попросите Даниила за 5–7 минут объяснить вам, какие 2–3 фактора влияют на дальность полёта мяча. Если захочет — пусть придумает, как это проверить в Scratch.</p>
+                            </div>
+                            
+                            <p class="message-footer">Если захотите, напишите: как часто Даниил занимается программированием дома? Это помогает нам лучше подбирать задачи.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Teacher Report -->
+                <div class="example-card fade-in">
+                    <div class="example-header email">
+                        <span>✉️</span>
+                        <span>Письмо педагогу</span>
+                    </div>
+                    <div class="example-content">
+                        <div class="message-preview">
+                            <div class="teacher-section">
+                                <div class="teacher-section-header">
+                                    <span>✅</span>
+                                    <strong>ВЫ ЗАМЕТИЛИ:</strong>
+                                </div>
+                                <p>Вы видели, что Даниил не просто реализует идею — он останавливается и спрашивает: «Что мне не хватает, чтобы это работало?»</p>
+                                <p style="color: #4A7C59; font-weight: 600; margin-top: 8px; padding-left: 28px;">Это самый редкий навык. Даниил не ищет «готовый ответ» — ищет данные для собственной модели.</p>
+                            </div>
+                            
+                            <div class="teacher-section" style="border-top: 1px solid #E2E0DA; padding-top: 16px; margin-top: 16px;">
+                                <div class="teacher-section-header">
+                                    <span>🎯</span>
+                                    <strong>ЭТО СИСТЕМНОЕ МЫШЛЕНИЕ:</strong>
+                                </div>
+                                <p>Даниил прошёл путь: <span class="highlight">Идея → Вопрос → Недостающие данные → Проверка логики</span></p>
+                                <p style="margin-top: 8px;">Вы создали такое условие: «Вот идея, как её реализовать?» — и Даниил сам пришёл к выводу: «Мне нужны факты и проверка».</p>
+                            </div>
+                            
+                            <div class="teacher-section" style="border-top: 1px solid #E2E0DA; padding-top: 16px; margin-top: 16px;">
+                                <div class="teacher-section-header">
+                                    <span>👁</span>
+                                    <strong>СМОТРЕТЬ ДАЛЬШЕ:</strong>
+                                </div>
+                                <ol>
+                                    <li>Что Даниил делал, когда столкнулся с непониманием? (задавал вопросы / молчал / просил помощь?)</li>
+                                    <li>Он хотел «реальную физику» или готов был к упрощённой модели?</li>
+                                    <li>Может ли он сам сказать, что именно в формуле непонятно?</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="teacher-next-step" style="margin-top: 16px;">
+                                <div class="teacher-section-header">
+                                    <span>📋</span>
+                                    <strong>СЛЕДУЮЩИЙ ШАГ:</strong>
+                                </div>
+                                <p>На следующем занятии: перевести «формулу/идею» в код. Может быть, не идеальную физику, а «табличную зависимость» — главное, чтобы работало.</p>
+                                <p style="font-size: 12px; font-style: italic; margin-top: 8px;">Смотреть: как реагирует на необходимость упростить? Просит ли уточнения?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Тарифы</h2>
+                <p>Выберите подходящий план. Все тарифы включают голосовой ввод и методику TAGIR.</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <div class="pricing-content">
+                        <div class="pricing-header">
+                            <h3>Старт</h3>
+                            <p>Для небольших центров</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="amount" style="color: #718096;">15 000</span>
+                            <span class="period">₽/месяц</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>До 50 учеников</li>
+                            <li>Базовые отчёты</li>
+                            <li>Email поддержка</li>
+                            <li>Стандартные шаблоны</li>
+                        </ul>
+                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
+                            Начать
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card recommended fade-in">
+                    <div class="pricing-badge">Рекомендуем</div>
+                    <div class="pricing-content">
+                        <div class="pricing-header">
+                            <h3>Рост</h3>
+                            <p>Для растущих центров</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="amount" style="color: #E07A5F;">35 000</span>
+                            <span class="period">₽/месяц</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>До 150 учеников</li>
+                            <li>Расширенная аналитика</li>
+                            <li>Приоритетная поддержка</li>
+                            <li>Настройка под бренд</li>
+                            <li>История развития</li>
+                            <li>API интеграция</li>
+                        </ul>
+                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
+                            Выбрать Рост
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card fade-in">
+                    <div class="pricing-content">
+                        <div class="pricing-header">
+                            <h3>Масштаб</h3>
+                            <p>Для сетевых центров</p>
+                        </div>
+                        <div class="pricing-price">
+                            <span class="amount" style="color: #1E3A5F; font-size: 28px;">Индивидуально</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>Безлимит учеников</li>
+                            <li>Полная кастомизация</li>
+                            <li>Выделенный менеджер</li>
+                            <li>Интеграция с CRM</li>
+                            <li>SLA гарантии</li>
+                            <li>Обучение педагогов</li>
+                        </ul>
+                        <a href="https://t.me/TagirFeo" class="pricing-btn" target="_blank">
+                            Обсудить
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pricing-promo fade-in">
+                <div class="pricing-promo-badge">
+                    <span>🎁</span>
+                    <span>Пилот для первых 5 центров — бесплатно на 2 недели</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final Section -->
+    <section class="cta-final" id="contact">
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+        
+        <div class="cta-content">
+            <h2 class="fade-in">
+                Начните удерживать клиентов<br>
+                <span>уже через неделю</span>
+            </h2>
+            
+            <p class="fade-in">
+                Пилот для первых 5 центров — бесплатно на 2 недели. 
+                Убедитесь в эффективности до оплаты.
+            </p>
+            
+            <div class="fade-in">
+                <a href="https://t.me/TagirFeo" class="btn-primary" target="_blank" style="animation: pulse 3s ease-in-out infinite;">
+                    Записаться на пилот
+                    <span>→</span>
+                </a>
+            </div>
+            
+            <div class="cta-contacts fade-in">
+                <p>Свяжитесь с нами напрямую</p>
+                
+                <div class="contacts-grid">
+                    <a href="https://t.me/TagirFeo" class="contact-item" target="_blank">
+                        <div class="contact-icon">💬</div>
+                        <span>@TagirFeo</span>
+                    </a>
+                    
+                    <a href="mailto:tagir75@gmail.com" class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <span>tagir75@gmail.com</span>
+                    </a>
+                    
+                    <a href="tel:+79786508626" class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+7 (978) 650-86-26</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">🧠</div>
+                    <span>TAGIR</span>
+                </div>
+                <p>AI-система отчётов для образовательных центров. Удерживайте клиентов через понимание развития детей.</p>
+                <div class="footer-socials">
+                    <a href="https://t.me/TagirFeo" target="_blank">💬</a>
+                    <a href="mailto:tagir75@gmail.com">✉️</a>
+                    <a href="tel:+79786508626">📞</a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Продукт</h4>
+                <ul>
+                    <li><a href="#methodology">О методике</a></li>
+                    <li><a href="#pricing">Тарифы</a></li>
+                    <li><a href="#examples">Примеры</a></li>
+                    <li><a href="#">Блог</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Компания</h4>
+                <ul>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Команда</a></li>
+                    <li><a href="#">Карьера</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Правовая информация</h4>
+                <ul>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Условия использования</a></li>
+                    <li><a href="#">Договор оферты</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Мастерская развития мышления TAGIR. Все права защищены.</p>
+            <p>Сделано с заботой о детях и педагогах</p>
+        </div>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Fade in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        fadeElements.forEach(el => fadeInObserver.observe(el));
+        
+        // Hero animations on load
+        window.addEventListener('load', () => {
+            const heroElements = document.querySelectorAll('.hero-content > *');
+            heroElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 100 + index * 150);
+            });
+        });
+    </script>
 </body>
 </html>
