@@ -94,22 +94,25 @@
     }
 
     /* вторичная кнопка — тихая */
-    .cta-secondary {
-      display: inline-block;
-      margin-top: 18px;
-      padding: 10px 22px;
-      font-size: 0.9rem;
-      border-radius: 10px;
-      text-decoration: none;
-      color: var(--muted);
-      border: 1px dashed var(--border);
-      background: transparent;
-    }
+  .cta-secondary {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--accent); /* #ff8a00 - оранжевый текст */
+  border: 1px solid var(--accent); /* оранжевая граница */
+  background: var(--accent-soft); /* #fff4e6 - кремовый фон */
+  transition: all 0.3s ease;
+}
 
-    .cta-secondary:hover {
-      background: #f3f4f6;
-      color: var(--text);
-    }
+.cta-secondary:hover {
+  background: #ffe8cc; /* чуть темнее при наведении */
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
 
     .card {
       background: var(--white);
