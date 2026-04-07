@@ -1,0 +1,46 @@
+# Зависимости
+node_modules/
+
+# База данных SQLite
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+db/*.db
+db/*.db-journal
+db/*.db-wal
+db/*.db-shm
+
+# Сессии
+db/sessions.db*
+
+# Логи
+*.log
+debug.log
+logs/
+
+# Переменные окружения (секреты)
+.env
+
+# Временные файлы
+tmp/
+temp/
+*.tmp
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Сборка и продакшн
+.next/
+dist/
+build/
+
+# Тесты
+coverage/
