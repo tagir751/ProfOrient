@@ -1,0 +1,15 @@
+PassengerNodejs /home/t/tagir7ow/.local/bin/node
+PassengerAppRoot /home/t/tagir7ow/mtrecker.tagir75.ru/public_html
+PassengerAppType node
+PassengerStartupFile app.js
+SetEnv NODE_ENV production
+SetEnv PORT 3000
+SetEnv HOSTNAME 127.0.0.1
+SetEnv SESSION_SECRET your-secret-key-change-this-in-production
+SetEnv DB_PATH /home/t/tagir7ow/mtrecker.tagir75.ru/public_html/db/mtracker.db
+
+# Логирование Passenger
+PassengerLogDir /home/t/tagir7ow/mtrecker.tagir75.ru/logs
+PassengerAppGroup mtracker
+PassengerMaxPoolSize 1
+PassengerMaxInstancesPerApp 1
