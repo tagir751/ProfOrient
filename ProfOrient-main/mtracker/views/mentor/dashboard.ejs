@@ -1,0 +1,51 @@
+<%- include('../layout', {title: 'Дашборд наставника'}) %>
+
+<div class="max-w-7xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-4xl font-bold text-[var(--ocean-dark)]">Мои ученики</h1>
+        <a href="/mentor/students/create" class="btn-ocean px-8 py-4 rounded-lg text-xl font-semibold">
+            ➕ Добавить ученика
+        </a>
+    </div>
+    
+    <% if (students.length === 0) { %>
+    <div class="glass-panel p-8 text-center">
+        <p class="text-2xl text-gray-600 mb-4">У вас пока нет учеников</p>
+        <a href="/mentor/students/create" class="btn-ocean px-8 py-4 rounded-lg text-xl font-semibold inline-block">
+            Добавить первого ученика
+        </a>
+    </div>
+    <% } else { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% students.forEach(student => { %>
+        <div class="glass-panel p-6 card-hover cursor-pointer" onclick="location.href='/mentor/students/<%= student.id %>'">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-2xl font-bold text-[var(--ocean-dark)]"><%= student.full_name || student.login %></h3>
+                <span class="text-4xl">👨‍🎓</span>
+            </div>
+            
+            <p class="text-gray-600 text-lg mb-4">@<%= student.login %></p>
+            
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="text-3xl font-bold text-[var(--ocean-blue)]"><%= student.sessionsCount %></p>
+                    <p class="text-gray-600 text-sm">Сессий</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-[var(--turquoise)]"><%= student.actionsCount %></p>
+                    <p class="text-gray-600 text-sm">Действий</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-green-600"><%= student.projectsCount %></p>
+                    <p class="text-gray-600 text-sm">Проектов</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <span class="text-[var(--ocean-blue)] text-lg font-semibold">Подробнее →</span>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } %>
+</div>

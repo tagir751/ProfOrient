@@ -1,0 +1,27 @@
+<%- include('../layout', {title: 'Мой прогресс'}) %>
+<div class="max-w-5xl mx-auto p-6">
+    <h1 class="text-4xl font-bold text-[var(--ocean-dark)] mb-8">Мой прогресс</h1>
+    <div class="glass-panel p-6">
+        <% if (metrics.length === 0) { %>
+        <p class="text-center text-gray-600 text-xl">Нет данных для отображения</p>
+        <% } else { %>
+        <canvas id="progressChart" height="100"></canvas>
+        <script>
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            const data = <%- JSON.stringify(metrics) %>;
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(m => new Date(m.created_at).toLocaleDateString('ru-RU')),
+                    datasets: [
+                        { label: 'Самостоятельность', data: data.map(m => m.independence_score), borderColor: '#0077be', fill: false },
+                        { label: 'Глубина мышления', data: data.map(m => m.thinking_depth_score), borderColor: '#40e0d0', fill: false },
+                        { label: 'Результат', data: data.map(m => m.completion_rate), borderColor: '#22c55e', fill: false }
+                    ]
+                },
+                options: { responsive: true, plugins: { legend: { labels: { font: { size: 16 } } } }, scales: { y: { beginAtZero: true, max: 100, ticks: { font: { size: 14 } } }, x: { ticks: { font: { size: 14 } } } } }
+            });
+        </script>
+        <% } %>
+    </div>
+</div>
