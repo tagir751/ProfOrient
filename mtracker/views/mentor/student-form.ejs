@@ -1,0 +1,55 @@
+<%- include('../layout', {title: 'Добавить ученика'}) %>
+
+<div class="max-w-3xl mx-auto p-6">
+    <div class="glass-panel p-8">
+        <h1 class="text-4xl font-bold text-[var(--ocean-dark)] mb-8">➕ Добавить ученика</h1>
+        
+        <form action="/mentor/students" method="POST" class="space-y-6">
+            <div>
+                <label for="login" class="block text-2xl font-semibold text-gray-700 mb-2">Логин *</label>
+                <input 
+                    type="text" 
+                    id="login" 
+                    name="login" 
+                    required
+                    class="input-large w-full border-2 border-gray-300 rounded-lg focus:border-[var(--ocean-blue)] focus:ring-2 focus:ring-[var(--sky-blue)] outline-none transition"
+                    placeholder="Придумайте логин для ученика"
+                >
+            </div>
+            
+            <div>
+                <label for="password" class="block text-2xl font-semibold text-gray-700 mb-2">Пароль *</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required
+                    minlength="4"
+                    class="input-large w-full border-2 border-gray-300 rounded-lg focus:border-[var(--ocean-blue)] focus:ring-2 focus:ring-[var(--sky-blue)] outline-none transition"
+                    placeholder="Минимум 4 символа, буквы и цифры"
+                >
+                <p class="text-gray-600 mt-2 text-lg">⚠️ Ученик сможет изменить пароль после входа</p>
+            </div>
+            
+            <div>
+                <label for="full_name" class="block text-2xl font-semibold text-gray-700 mb-2">Полное имя</label>
+                <input 
+                    type="text" 
+                    id="full_name" 
+                    name="full_name" 
+                    class="input-large w-full border-2 border-gray-300 rounded-lg focus:border-[var(--ocean-blue)] focus:ring-2 focus:ring-[var(--sky-blue)] outline-none transition"
+                    placeholder="Имя и фамилия ученика"
+                >
+            </div>
+            
+            <div class="flex gap-4 pt-6">
+                <button type="submit" class="btn-ocean flex-1 py-4 rounded-lg text-xl font-semibold">
+                    Создать ученика
+                </button>
+                <a href="/mentor/dashboard" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-8 py-4 rounded-lg text-xl font-semibold text-center">
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

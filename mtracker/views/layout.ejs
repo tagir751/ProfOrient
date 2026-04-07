@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'mTracker' %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Морская волна - цветовая палитра */
+        :root {
+            --ocean-dark: #006994;
+            --ocean-blue: #0077be;
+            --turquoise: #40e0d0;
+            --sky-blue: #87ceeb;
+            --cloud-white: #f0f8ff;
+            --sand: #fdf5e6;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--cloud-white) 0%, var(--sky-blue) 50%, var(--turquoise) 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 105, 148, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-ocean {
+            background: linear-gradient(135deg, var(--ocean-blue), var(--turquoise));
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 119, 190, 0.3);
+        }
+        
+        .btn-ocean:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 119, 190, 0.4);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        /* Крупные элементы для слабовидящих */
+        .input-large {
+            font-size: 1.1rem;
+            padding: 0.75rem 1rem;
+        }
+        
+        .text-large {
+            font-size: 1.1rem;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 105, 148, 0.3);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <% if (typeof user !== 'undefined' && user) { %>
+    <!-- Навигация -->
+    <nav class="glass-panel m-4 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="/images/logo.png" alt="mTracker Logo" class="h-12 w-auto">
+                <span class="text-2xl font-bold text-[var(--ocean-dark)]">mTracker</span>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <span class="text-large">Привет, <%= user.fullName || user.login %>!</span>
+                
+                <% if (role === 'admin') { %>
+                    <a href="/admin/dashboard" class="text-large hover:text-[var(--ocean-blue)]">Дашборд</a>
+                    <a href="/admin/users" class="text-large hover:text-[var(--ocean-blue)]">Пользователи</a>
+                <% } else if (role === 'mentor') { %>
+                    <a href="/mentor/dashboard" class="text-large hover:text-[var(--ocean-blue)]">Дашборд</a>
+                    <a href="/mentor/students/create" class="text-large hover:text-[var(--ocean-blue)]">Добавить ученика</a>
+                <% } else if (role === 'student') { %>
+                    <a href="/student/dashboard" class="text-large hover:text-[var(--ocean-blue)]">Дашборд</a>
+                    <a href="/student/sessions" class="text-large hover:text-[var(--ocean-blue)]">Сессии</a>
+                    <a href="/student/actions" class="text-large hover:text-[var(--ocean-blue)]">Действия</a>
+                    <a href="/student/projects" class="text-large hover:text-[var(--ocean-blue)]">Проекты</a>
+                    <a href="/student/progress" class="text-large hover:text-[var(--ocean-blue)]">Прогресс</a>
+                <% } %>
+                
+                <a href="/login/logout" class="btn-ocean px-6 py-2 rounded-lg text-large">Выход</a>
+            </div>
+        </div>
+    </nav>
+    <% } %>
+    
+    <!-- Основной контент -->
+    <main class="<%= typeof user !== 'undefined' && user ? '' : 'min-h-screen flex items-center justify-center' %>">
+        <%- body %>
+    </main>
+    
+    <% if (typeof user !== 'undefined' && user) { %>
+    <!-- Футер -->
+    <footer class="glass-panel m-4 mt-8 p-4 text-center">
+        <p class="text-large text-gray-600">© 2024 mTracker - Система трекинга прогресса учеников</p>
+    </footer>
+    <% } %>
+    
+    <script>
+        // Универсальная функция для открытия модальных окон
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+        
+        // Закрытие по клику вне модального окна
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
